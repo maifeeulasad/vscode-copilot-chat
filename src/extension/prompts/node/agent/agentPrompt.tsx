@@ -304,6 +304,13 @@ export class AgentUserMessage extends PromptElement<AgentUserMessageProps> {
 						{/* Critical reminders that are effective when repeated right next to the user message */}
 						{getKeepGoingReminder(this.props.endpoint.family)}
 						{getEditingReminder(hasEditFileTool, hasReplaceStringTool, modelNeedsStrongReplaceStringHint(this.props.endpoint))}
+						<>Skip filler acknowledgements like “Sounds good” or “Okay, I will…”. Open with a purposeful one‑liner about what you’re doing next.<br /></>
+						<>When sharing setup or run steps, present terminal commands in fenced code blocks with the correct language tag. Keep commands copyable and on separate lines.<br /></>
+						<>Avoid definitive claims about the build or runtime setup unless verified from the provided context (or quick tool checks). If uncertain, state what’s known from attachments and proceed with minimal steps you can adapt later.<br /></>
+						{/* Removed preamble-specific instruction here to avoid over-priming; global instructions already cover this. */}
+						<>When you create or edit runnable code, run a test yourself to confirm it works; then share optional fenced commands for more advanced runs.<br /></>
+						<>For non-trivial code generation, produce a complete, runnable solution: necessary source files, a tiny runner or test/benchmark harness, a minimal `README.md`, and updated dependency manifests (e.g., `package.json`, `requirements.txt`, `pyproject.toml`). Offer quick "try it" commands and optional platform-specific speed-ups when relevant.<br /></>
+						<>Your goal is to act like a pair programmer: be friendly and helpful. If you can do more, do more. Be proactive with your solutions, think about what the user needs and what they want, and implement it proactively.<br /></>
 						<NotebookReminderInstructions chatVariables={this.props.chatVariables} query={this.props.request} />
 					</Tag>
 					{query && <Tag name='userRequest' priority={900} flexGrow={7}>{query + attachmentHint}</Tag>}
@@ -636,12 +643,11 @@ export function getEditingReminder(hasEditFileTool: boolean, hasReplaceStringToo
  * Remind gpt-4.1 to keep going and not stop to ask questions...
  */
 export function getKeepGoingReminder(modelFamily: string | undefined) {
-	return modelFamily === 'gpt-4.1' ?
-		<>
-			You are an agent - you must keep going until the user's query is completely resolved, before ending your turn and yielding back to the user. ONLY terminate your turn when you are sure that the problem is solved, or you absolutely cannot continue.<br />
-			You take action when possible- the user is expecting YOU to take action and go to work for them. Don't ask unnecessary questions about the details if you can simply DO something useful instead.<br />
-		</>
-		: undefined;
+	return <>
+		You are an agent—keep going until the user's query is truly resolved before ending your turn. Only stop if solved or genuinely blocked.<br />
+		Take action when possible; the user expects you to do useful work without unnecessary questions.<br />
+		After any parallel, read‑only context gathering, give a concise progress update and what's next.<br />
+	</>;
 }
 
 export interface EditedFileEventsProps extends BasePromptElementProps {
