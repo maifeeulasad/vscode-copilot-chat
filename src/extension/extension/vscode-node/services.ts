@@ -52,6 +52,7 @@ import { ILanguageContextService } from '../../../platform/languageServer/common
 import { ICompletionsFetchService } from '../../../platform/nesFetch/common/completionsFetchService';
 import { CompletionsFetchService } from '../../../platform/nesFetch/node/completionsFetchServiceImpl';
 import { IFetcherService } from '../../../platform/networking/common/fetcherService';
+import { IToolDeferralService } from '../../../platform/networking/common/toolDeferralService';
 import { ChatWebSocketManager, IChatWebSocketManager } from '../../../platform/networking/node/chatWebSocketManager';
 import { FetcherService } from '../../../platform/networking/vscode-node/fetcherServiceImpl';
 import { resolveOTelConfig } from '../../../platform/otel/common/otelConfig';
@@ -97,6 +98,10 @@ import { ChatDebugFileLoggerService } from '../../chat/vscode-node/chatDebugFile
 import { ChatHookService } from '../../chat/vscode-node/chatHookService';
 import { HooksOutputChannel } from '../../chat/vscode-node/hooksOutputChannel';
 import { SessionTranscriptService } from '../../chat/vscode-node/sessionTranscriptService';
+import { IChatSearchPanelService } from '../../chatSearch/common/chatSearchPanelService';
+import { IChatSearchService } from '../../chatSearch/common/chatSearchService';
+import { ChatSearchPanel } from '../../chatSearch/vscode-node/chatSearchPanel';
+import { ChatSearchService } from '../../chatSearch/vscode-node/chatSearchService';
 import { CommandServiceImpl, ICommandService } from '../../commands/node/commandService';
 import { ICopilotInlineCompletionItemProviderService } from '../../completions/common/copilotInlineCompletionItemProviderService';
 import { CopilotInlineCompletionItemProviderService } from '../../completions/vscode-node/copilotInlineCompletionItemProviderService';
@@ -137,7 +142,6 @@ import { FixCookbookService, IFixCookbookService } from '../../prompts/node/inli
 import { WorkspaceMutationManager } from '../../testing/node/setupTestsFileManager';
 import { AgentMemoryService, IAgentMemoryService } from '../../tools/common/agentMemoryService';
 import { IMemoryCleanupService, MemoryCleanupService } from '../../tools/common/memoryCleanupService';
-import { IToolDeferralService } from '../../../platform/networking/common/toolDeferralService';
 import { ToolDeferralService } from '../../tools/common/toolDeferralService';
 import { IToolsService } from '../../tools/common/toolsService';
 import { ToolsService } from '../../tools/vscode-node/toolsService';
@@ -228,6 +232,8 @@ export function registerServices(builder: IInstantiationServiceBuilder, extensio
 	builder.define(IHookExecutor, new SyncDescriptor(NodeHookExecutor));
 	builder.define(IHooksOutputChannel, new SyncDescriptor(HooksOutputChannel));
 	builder.define(ISessionTranscriptService, new SyncDescriptor(SessionTranscriptService));
+	builder.define(IChatSearchService, new SyncDescriptor(ChatSearchService));
+	builder.define(IChatSearchPanelService, new SyncDescriptor(ChatSearchPanel));
 	builder.define(IChatDebugFileLoggerService, new SyncDescriptor(ChatDebugFileLoggerService));
 	builder.define(ILinkifyService, new SyncDescriptor(LinkifyService));
 	builder.define(IChatMLFetcher, new SyncDescriptor(ChatMLFetcherImpl));

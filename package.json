@@ -23,7 +23,7 @@
 	"icon": "assets/copilot.png",
 	"pricing": "Trial",
 	"engines": {
-		"vscode": "^1.115.0",
+		"vscode": "^1.113.0",
 		"npm": ">=9.0.0",
 		"node": ">=22.14.0"
 	},
@@ -2228,6 +2228,12 @@
 			{
 				"command": "github.copilot.chat.compact",
 				"title": "%github.copilot.command.compactConversation%"
+			},
+			{
+				"command": "github.copilot.chat.search.find",
+				"title": "Find in Chat",
+				"icon": "$(search)",
+				"category": "Chat"
 			},
 			{
 				"command": "github.copilot.chat.explain",
@@ -5236,6 +5242,11 @@
 				}
 			],
 			"view/title": [
+				{
+					"command": "github.copilot.chat.search.find",
+					"when": "view == workbench.panel.chat.view.copilot",
+					"group": "navigation@8"
+				},
 				{
 					"submenu": "github.copilot.chat.debug.filter",
 					"when": "view == copilot-chat",
